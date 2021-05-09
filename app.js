@@ -1,117 +1,119 @@
 const express = require('express');
 const app = express();
+const port = 4000;
 
-//connect to mongo client 
+//SET UP MONGOOSE
+const mongoose = require('mongoose');
 const connectionString = 'mongodb+srv://oluwagbenga:REY$VE*m8*biKM2@crudappdb-cluster.rclek.mongodb.net/crudAppDB?retryWrites=true&w=majority'
-const MongoClient = require('mongodb').MongoClient;
+// const MongoClient = require('mongodb').MongoClient;
 
-const client = new MongoClient(connectionString, {
+mongoose.connect(connectionString, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+    useUnifiedTopology: true,
+    useFindAndModify: false
+}, (err) => {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log('Database connection successful!')
+    }
+})
 
 app.use(express.json());
 app.use(express.urlencoded());
 
-const crudAppSchema = new
+//CREATE DATA SCHEMA
+const crudDataSchema = new mongoose.Schema({
+    name:String,
+    email:String,
+    country:String
+})
+const crudData = mongoose.model('crudData', crudDataSchema)
 
-
-
-//To find an object in the db
-
-// client.connect((err, connectedClient) => {
-//     if (err) {
-//         throw err}
-//         else {console.log('Database connected...')};
-//     const db = connectedClient.db("crudAppDB");
-//              db.collection('data').find({}).toArray((err, result) => {
-//                 console.log(result)
-//         })
-//      })
-
+//POST request to /crudData to create a new profile
+app.post('/cruddatas', function (req, res) {
+    //retrieve new profile details from req.body
+    //create a new profile and save to DB
+    //send response to client
+  
+    crudData.create({
+        name: req.body.name,
+        email: req.body.email,
+        country: req.body.country
+    }, (err, newProfile) => {
+        if(err) {
+            return res.status(500).json({ message: err })
+        } else {
+            return res.status(200).json({ message: "New profile successfully created!",
+          newProfile})
+        }
+    })
     
-// To create an object in the Database
-app.post('/crudData', (req, res) => {
-    client.connect((err, connectedClient) => {
+})
+//GET request to /crudData to fetch all profiles
+app.get('/cruddatas', (req, res) => {
+    //Fetch all profiles
+ crudData.find({}, (err, profiles) => {
+     if (err) {
+         return res.status(500).json( {message: err})
+     }
+     else {
+         return res.status(200).json({ profiles })
+        }
+    })
+    //send response to client
+})
+
+//Get request to /crudData/:id to fetch a single profile
+app.get('/cruddatas/:id', (req, res) => {
+    crudData.findOne({ _id: req.params.id }, (err, profile) => {
+    if (err) {
+        return res.status(500).json( {message: err})
+    } else if (!profile) {
+        return res.status(404).json({ message:`profile not found!`})
+    }
+    else  {
+        return res.status(200).json({profile})
+    }
+
+    })
+})
+
+//PUT request to /crudData/:id to update a single profile
+app.put('/cruddatas/:id', (req, res) => {
+    crudData.findByIdAndUpdate(req.params.id, { 
+        name:req.body.name,
+        email:req.body.email,
+        country:req.body.country
+    }, (err, profile) => {
+        if(err) {
+            return res.status(500).json({message: err})
+        }else if(!profile) {
+            return res.status(404).json({message: `profile not found`})
+        }else {
+            //save updated profile
+            profile.save((err, savedProfile) => {
+                if (err) {
+                    return res.status(400).json({message: err})
+                }else {
+                    return res.status(200).json({message: `profile updated successfully`})
+                }
+            }
+         )}
+    })
+})
+//Delete request to /crudData/:id to delete a single profile
+app.delete('/cruddatas/:id', (req, res) => {
+    crudData.findByIdAndDelete(req.params.id, (err, profile) => {
         if (err) {
             return res.status(500).json({message: err})
-        } 
-        const db = connectedClient.db('crudAppDB');
-        db.collection('crudData').insertOne({
-            name: "Iyanu Ayeni",
-            email: "iyanuaye@work.net",
-            country: "Nigeria"
-        }, (err, result) => {
-            if (err) return res.status(500).json({message: err});
-            return res.status(200).json({message: 'New profile successfully created!'})
-            })
-    });  console.log( `New profile successfully created!`);
-})
-
-//to find an object in the Database
-app.get('/crudData', (req,res) => {
-    
-    client.connect((err, connectedClient) => {
-            if (err) return res.status(500).json({message: err});
-            const db = connectedClient.db("crudAppDB");
-            db.collection('crudData').find({}).toArray((err, result) => {
-                if (err) {
-                    return res.status(500).json({message: err})
-                }
-            return res.status(200).json({crudData: result});
-           
-
-                })
-             })
-           
-         })
-
-
-//to update an object in the Database
-app.put('/crudData', (req, res) => {
-    client.connect((err, connectedClient) => {
-        if (err){
-             return res.status(500).json({message: err}) }
-             var oldData = {
-                name: "Oluwagbenga Aduloju",
-                email: "adulojugbenga@yahoo.com",
-                country: "Nigeria"
-            }
-            var newData = {
-                $set: {
-                    name: req.body.name,
-                    email: req.body.email,
-                    country: req.body.country
-                }
-            }
-   
-    const db = connectedClient.db('crudAppDB');
-    db.collection('crudData').updateOne(oldData, newData,
-    (err, result) => {
-        if (err) return res.status(500).json({message: err});
-        return res.status(200).json({message: 'Profile updated successfully!'})
+        }
+        else if(!profile) {
+            return res.status(404).json({message: `profile not found`})
+        }else {
+            return res.status(200).json({message: `profile deleted successfully`})
+        }
     })
 })
 
-console.log({message:`Profile Successfully deleted!`});
-})
-
-//to delete an object in the database
-
-app.delete('/crudData', (req, res) => {
-    client.connect((err, connectedClient) => {
-        if (err) return res.status(500).json({message: err});    
-        const db = connectedClient.db('crudAppDB');
-        const myQuery = {name: req.body.name}
-        db.collection('crudData').deleteOne(myQuery, function(err, obj){
-            if (err) {
-                return res.status(500).json({message: err})
-            }
-            return res.status(200).json({message: `Profile Successfully deleted!`})
-        })
-    })
-    console.log({message:`Profile Successfully deleted!`});
-})
-
-
-app.listen(4000, () =>  console.log('server up and running'))
+app.listen(port, () => console.log(`Server successfully running`))
