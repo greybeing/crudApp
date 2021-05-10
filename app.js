@@ -9,7 +9,7 @@ const port = process.env.PORT;
 
 //SET UP MONGOOSE
 const mongoose = require('mongoose');
-const connectionString =  process.env.MONGO_URI
+const connectionString =  process.env.MONGO_URI;
 // const MongoClient = require('mongodb').MongoClient;
 
 mongoose.connect(connectionString, {
