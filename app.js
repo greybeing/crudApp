@@ -1,13 +1,15 @@
 const express = require('express');
 const app = express();
-const port = 4000
+const dotenv = require('dotenv')
+dotenv.config();
+const port = process.env.PORT;
 
 
 
 
 //SET UP MONGOOSE
 const mongoose = require('mongoose');
-const connectionString =  `mongodb+srv://oluwagbenga:REY$VE*m8*biKM2@crudappdb-cluster.rclek.mongodb.net/crudAppDB?retryWrites=true&w=majority`
+const connectionString =  process.env.MONGO_URI
 // const MongoClient = require('mongodb').MongoClient;
 
 mongoose.connect(connectionString, {
@@ -60,11 +62,11 @@ app.get('/cruddatas', (req, res) => {
      if (err) {
          return res.status(500).json( {message: err})
      }
-     else {
+     else { //send response to client
          return res.status(200).json({ profiles })
         }
     })
-    //send response to client
+    
 })
 
 //Get request to /crudData/:id to fetch a single profile
@@ -119,4 +121,4 @@ app.delete('/cruddatas/:id', (req, res) => {
     })
 })
 
-app.listen(process.env.PORT || 4000, () => console.log(`Server successfully running`))
+app.listen(process.env.PORT || port, () => console.log(`Server successfully running`))
