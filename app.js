@@ -1,10 +1,13 @@
 const express = require('express');
 const app = express();
-const port = 4000;
+const port = 4000
+
+
+
 
 //SET UP MONGOOSE
 const mongoose = require('mongoose');
-const connectionString = 'mongodb+srv://oluwagbenga:REY$VE*m8*biKM2@crudappdb-cluster.rclek.mongodb.net/crudAppDB?retryWrites=true&w=majority'
+const connectionString =  `mongodb+srv://oluwagbenga:REY$VE*m8*biKM2@crudappdb-cluster.rclek.mongodb.net/crudAppDB?retryWrites=true&w=majority`
 // const MongoClient = require('mongodb').MongoClient;
 
 mongoose.connect(connectionString, {
@@ -116,4 +119,4 @@ app.delete('/cruddatas/:id', (req, res) => {
     })
 })
 
-app.listen(port, () => console.log(`Server successfully running`))
+app.listen(process.env.PORT || 4000, () => console.log(`Server successfully running`))
