@@ -1,3 +1,4 @@
+
 # crudApp
 
 A simple express application that:
@@ -6,7 +7,7 @@ A simple express application that:
 
 2. Creates a payload through the body of a POST request on  [POSTMAN](https://web.postman.com/)
 
-*The post request body must contain only the key value pairs of **name**,**country** and **email** in json format*
+*The post request body will be profile data which must contain only the key value pairs of name,country and email in **json** format*
 
 >
 
@@ -16,16 +17,16 @@ A simple express application that:
         "country": "England"
     } 
 
-3. Get's the data created
+3. Get's the profile data 
 
-4. Updates the data created
+4. Updates the profile data 
 
-5.  Deletes the data created
+5.  Deletes the profile data 
 
 ## API Reference
 
-#### To CREATE the payload
-###### Enter the data object in the body of the post request on  [POSTMAN](https://web.postman.com/) and send
+#### To CREATE the payload and save to a Database named **cruddatas**
+###### Enter a profile data object in the body of the http request on  [POSTMAN](https://web.postman.com/) and send
 
 ```http
   POST https://crudapp2021.herokuapp.com/cruddatas
@@ -33,7 +34,7 @@ A simple express application that:
 
 
 
-#### To READ the data created
+#### To READ all profiles 
 
 ##### Send
 
@@ -42,31 +43,36 @@ A simple express application that:
 ```
 
 
-#### To UPDATE the data created
+
+#### To READ a profile 
 
 ##### Send
 
 ```http
- PUT https://crudapp2021.herokuapp.com/cruddatas
+ GET https://crudapp2021.herokuapp.com/cruddatas/_id
 ```
 
 
-#### To DELETE the data created
+
+#### To UPDATE a profile 
+
+##### Enter the new profile data in the body of a PUT request on  [POSTMAN](https://web.postman.com/) and send
+
+```http
+ PUT https://crudapp2021.herokuapp.com/cruddatas/_id
+```
+
+#### To DELETE a profile
 
 ##### Send
 
 ```http
- PUT https://crudapp2021.herokuapp.com/cruddatas
+ DELETE https://crudapp2021.herokuapp.com/cruddatas/_id
 ```
 
 
-
-  
 ## Hosting
 This app is currently hosted on Heroku @ https://crudapp2021.herokuapp.com/
 
 Github @ https://github.com/greybeing/crudApp
 
-
-
-  
