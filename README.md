@@ -23,7 +23,7 @@ A simple express application that:
 
 5.  Deletes the profile data 
 
-## API Reference
+## ROUTES
 
 #### To CREATE the payload and save to a database collection named **cruddatas**
 ###### Enter a profile data object in the body of the http request on  [POSTMAN](https://web.postman.com/) and send
@@ -77,7 +77,7 @@ This app is currently hosted on Heroku @ https://crudapp2021.herokuapp.com/
 Github @ https://github.com/greybeing/crudApp
 
 
-## Authors
+## Author
 
 - [@grey_being](https://www.greybeing.com/)
 
