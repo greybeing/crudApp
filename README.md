@@ -3,9 +3,9 @@
 
 A simple express application that:
 
-1. Connects to a Database
+1. Connects to a Database (MongoDB Atlas)
 
-2. Creates a payload through the body of a POST request on  [POSTMAN](https://web.postman.com/)
+2. Creates a payload through the body of a POST request on  [POSTMAN](https://web.postman.com/) and saves the result in the database
 
 *The post request body will be profile data which must contain only the key value pairs of name,country and email in **json** format*
 
@@ -25,7 +25,7 @@ A simple express application that:
 
 ## API Reference
 
-#### To CREATE the payload and save to a Database named **cruddatas**
+#### To CREATE the payload and save to a database collection named **cruddatas**
 ###### Enter a profile data object in the body of the http request on  [POSTMAN](https://web.postman.com/) and send
 
 ```http
