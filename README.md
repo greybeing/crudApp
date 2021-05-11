@@ -76,3 +76,9 @@ This app is currently hosted on Heroku @ https://crudapp2021.herokuapp.com/
 
 Github @ https://github.com/greybeing/crudApp
 
+
+## Authors
+
+- [@grey_being](https://www.greybeing.com/)
+
+  
